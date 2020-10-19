@@ -100,6 +100,7 @@ int main(int argc, char *argv[])
     int w = 200;    //default number of worker threads
     int b = 500; 	// default capacity of the request buffer, you should change this default
 	int m = MAX_MESSAGE; 	// default capacity of the message buffer
+    char* mSize = "";
     srand(time_t(NULL));
     string fname = "";
 
@@ -107,7 +108,7 @@ int main(int argc, char *argv[])
     while((opt = getopt(argc, argv, "m:n:b:w:p:f:")) != -1){
         switch (opt) {
             case 'm':
-                m = atoi(optarg);
+                mSize = optarg;
                 break;
             case 'n':
                 n = atoi(optarg);
@@ -131,6 +132,9 @@ int main(int argc, char *argv[])
     int pid = fork();
     if (pid == 0){
 		// modify this to pass along m
+        if(mSize != "") {
+            char* args[] = {"./server", "-m", mSize, NULL};
+        }
         execl ("server", "server", (char *)NULL);
     }
     
